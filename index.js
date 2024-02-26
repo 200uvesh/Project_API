@@ -8,8 +8,8 @@ const app = express()
 const cors = require("cors")
 const cookieParser = require("cookie-parser");
 const methodOverride = require("method-override")
-const status = require("express-status-monitor")
 
+ 
 
  
  
@@ -18,7 +18,7 @@ const status = require("express-status-monitor")
 
 
 //----------------------------Middlewares------------------------------------------------
-app.use(status())  // for montoring Streams
+ 
 app.use(methodOverride('_method'))
 app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(cookieParser("secret"));
