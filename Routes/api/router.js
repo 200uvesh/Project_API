@@ -11,6 +11,7 @@ router.get('/' , (req , res)=>{
  
 
 //ROUTES
+//OK
 router.post('/register'   ,   register )
 // router.post("/login/:id" ,login )
 router.post("/login/" ,login )
