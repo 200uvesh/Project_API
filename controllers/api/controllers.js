@@ -47,8 +47,8 @@ exports.register=  async(req , res)=>{
                             secure: false, 
                             expires:new Date(Date.now()+25892000000)
                         })
-                      console.log("Cookies Set Sucessfully")
-                      console.log(token)
+                    //   console.log("Cookies Set Sucessfully")
+                    //   console.log(token)
                     //   res.send("Register Sucess !! ")
                       res.redirect("/addPersonalDetails")
 
@@ -61,12 +61,12 @@ exports.register=  async(req , res)=>{
             }
             else{
                 res.status(200).send("Email is already registered")
-                console.log("Email is alreday registered")
+                // console.log("Email is alreday registered")
             }
          }
     catch(err){
 
-        console.log("Something went wrong")
+        // console.log("Something went wrong")
         res.send("Something went wrong")
     }
 }  
@@ -90,13 +90,13 @@ exports.login= async (req , res)=>{
      const values = await RegisterUser.findOne({email:data.email})
    
        if(values){
-        console.log(values)
+        // console.log(values)
          
     //    const hashPassword =  values.password
-       console.log(values.password)
-       console.log(data.password)
+    //    console.log(values.password)
+    //    console.log(data.password)
        const isMatch =  await  bcrypt.compare (data.password , values.password  )
-       console.log(isMatch)
+    //    console.log(isMatch)
 
      
        //bcrypt.compare(req.body.password,RegisterUser.password)
@@ -119,12 +119,14 @@ exports.login= async (req , res)=>{
                         secure: false, 
                         expires:new Date(Date.now()+25892000000)
                     })
-                  console.log("Cookies Set Sucessfully")
+                //   console.log("Cookies Set Sucessfully")
 
                   }
             })
              
-            console.log("Login Sucess")
+            // console.log("Login Sucess")
+             await data.save()
+             console.log("Login Detail Save Sucess")
           
              //  res.status(200).send("Login Sucess !!")
             res.redirect("/userPage") 
@@ -239,6 +241,7 @@ exports.updateUsername= async(req , res)=>{
        }
        else{
         await RegisterUser.updateOne({username:data.oldUsername} , {$set:{username:data.newUsername}})
+        // await data.save()
         console.log("Username  Updated sucessfully !!!")
         res.status(201).send("Username  Updated sucessfully !!!")
 
@@ -274,6 +277,7 @@ exports.updateEmail=async(req , res)=>{
           res.status(200).send("Email is not correct ! ! ")
        }
          await RegisterUser.updateOne({email:data.oldEmail} , {$set:{email:data.newEmail}})
+        //  await data.save()
          console.log("Email   Updated sucessfully !!!")
          res.status(201).send("Email   Updated sucessfully !!!")
     }
@@ -380,7 +384,7 @@ exports.logout= async(req , res)=>{
     try {
         res.clearCookie("jwtToken")
         console.log("Logout Sucess!! ")
-        res.redirect('/register')
+        res.redirect('/login')
         // res.send("You Have Logout Sucessfully !!")
 
         
