@@ -1,12 +1,12 @@
 <html>
     <body>
-        <h2> ------------- Register User ------------- </h2>
+        <h2> ------------- Delete user ------------- </h2>
         <br>
         <br>
         <br>
-        <form method="POST" action="/api/register">
-            <label for="">Username</label>
-            <input type="text" name="username" id="">
+        <form method="POST" action="/api/deleteUser?_method=DELETE">
+            <label for="">First Name</label>
+            <input type="text" name="firstName" id="">
             <br>
             <br>
             <br>
@@ -20,13 +20,9 @@
             <br>
             <br>
             <br>
-            <button type="submit"> Register </button>
-           
+            <button type="submit"> Delete user </button>
         </form>
         <br>
-        <br>
-        <br>
-        <a href="/login" > Aleardy have an account?</a>
         <br>
     </body>
 </html>

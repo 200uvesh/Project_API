@@ -7,6 +7,8 @@ connectDB()
 const app = express()
 const cors = require("cors")
 const cookieParser = require("cookie-parser");
+const methodOverride = require("method-override")
+
  
  
  
@@ -14,6 +16,8 @@ const cookieParser = require("cookie-parser");
 
 
 //----------------------------Middlewares------------------------------------------------
+app.use(methodOverride('_method'))
+app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(cookieParser("secret"));
 app.use(cors())
 app.use(express.json()) 
@@ -23,16 +27,26 @@ app.set("view engine" , "ejs")
  
  
 //-----------------------------CREATING-ROUTES--------------------------------------------
+
+//User Routes
 const userRoute = require("./Routes/api/router.js")
 app.use('/api' , userRoute)
 
+//View Routes
 const viewRoute = require("./Routes/views/router.js")
 app.use('/' , viewRoute)
 
 
-/*
 
- -----------------------  For Frontend techs  -------------------
+
+/*
+  pehle ye tha maine ab maine  ise change krke button lgaya hai  
+  app.use(methodOverride('X-HTTP-Method-Override'));
+
+
+
+
+ -----------------------  For Frontend tech  -------------------
 
  MIDDLEWARES -: 
  const path = require("path")

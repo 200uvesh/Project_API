@@ -9,6 +9,7 @@ const addPersonalDetails = require("../../DataModels/personalDetail.model.js")
 const nodemailer = require("nodemailer")
 
 
+
  
   
 
@@ -32,7 +33,7 @@ exports.register=  async(req , res)=>{
                 const payload = {
                     username : data.username  , 
                     email: data.email, 
-                     password: data.password
+                    password: data.password
                   }
                 
                   jwt.sign(payload , process.env.JWT_SECRET_KEY , (error , token)=>{
@@ -48,7 +49,10 @@ exports.register=  async(req , res)=>{
                         })
                       console.log("Cookies Set Sucessfully")
                       console.log(token)
-                      res.send("Register Sucess !! ")
+                    //   res.send("Register Sucess !! ")
+                      res.redirect("/addPersonalDetails")
+
+                      
                                                   
                   } )
 
@@ -63,7 +67,7 @@ exports.register=  async(req , res)=>{
     catch(err){
 
         console.log("Something went wrong")
-        res.json(err)
+        res.send("Something went wrong")
     }
 }  
 
@@ -80,8 +84,8 @@ exports.login= async (req , res)=>{
             email: req.body.email,
             password: req.body.password
         }
-    )
-    try{
+     )
+     try{
     
     const values = await RegisterUser.findOne({email:data.email})
    
@@ -96,13 +100,36 @@ exports.login= async (req , res)=>{
        //bcrypt.compare(req.body.password,RegisterUser.password)
       
         if(isMatch){
+            const payload = {
+                username : data.username  , 
+                email: data.email, 
+                 password: data.password
+              }
+            
+              jwt.sign(payload , process.env.JWT_SECRET_KEY , (error , token)=>{
+                  if(error){
+                     
+                      throw error
+                  }
+                   
+                    res.cookie( "jwtToken" , token ,
+                    { httpOnly: true, 
+                        secure: false, 
+                        expires:new Date(Date.now()+25892000000)
+                    })
+                  console.log("Cookies Set Sucessfully")
+
+
+            
             
              
             console.log("Login Sucess")
           
-             res.status(200).send("Login Sucess !!")
+            //  res.status(200).send("Login Sucess !!")
+            res.redirect("/userPage")
             
-        }
+        })
+    }
         else{
             res.status(200).send("Email or Password is Incorresct")
             console.log("Email or Password is Incorrect")    
@@ -139,7 +166,8 @@ exports.addPersonalDetail=async(req , res)=>{
 
        await data.save()
        console.log("Personal Details saved sucessfull !!")
-        res.status(200).send("Personal Details saved sucessfull !!")
+       res.redirect("/userPage")
+        // res.status(200).send("Personal Details saved sucessfull !!")
          
 
     }
@@ -147,10 +175,7 @@ exports.addPersonalDetail=async(req , res)=>{
         console.log("Error is Occured : " +error )
         res.status(500).send(error)
 
-    }
-     
-
-         
+    } 
  }
 
 
@@ -158,14 +183,14 @@ exports.addPersonalDetail=async(req , res)=>{
 
 
 
-//ADD DETAILS API
+//GET DETAILS API
 
-exports.getDetails = async(req , res)=>{
-    const data = new updateDetails(
-        {
-            email:req.body.email
-        }
-    )
+exports.getUserDetails = async(req , res)=>{
+    // const data = new updateDetails(
+    //     {
+    //         email:req.body.email
+    //     }
+    // )
     try{
         const dataPersonal =  await addPersonalDetails.findOne()
         const dataRegister = await RegisterUser.findOne()
@@ -265,7 +290,6 @@ exports.updateEmail=async(req , res)=>{
 
 
 
-
 //UPDATE-password API
 exports.updatePassword=async(req , res)=>{
 
@@ -317,6 +341,7 @@ exports.deletUser = async(req , res)=>{
     try{
         const data = new updateDetails(
             {
+                firstName: req.body.firstName,
                 email:req.body.email  , 
                 password:req.body.password
             }
@@ -329,8 +354,12 @@ exports.deletUser = async(req , res)=>{
        }
        else{
         await RegisterUser.deleteOne({email:data.email} )
+        await addPersonalDetails.deleteOne({firstName:data.firstName})
+        res.clearCookie("jwtToken")
         console.log("  Account delete Sucessfully ")
-        res.status(201).send("Account delete Sucesfully")
+        res.redirect('/register')
+        // res.status(201).send("Account delete Sucesfully")
+        console.log("I am present after respond the data")
 
        }
          
@@ -345,6 +374,30 @@ exports.deletUser = async(req , res)=>{
 
 
 
+ 
+// Logout API (clear cookies(TOKEN))
+exports.logout= async(req , res)=>{
+    try {
+        res.clearCookie("jwtToken")
+        console.log("Logout Sucess!! ")
+        res.redirect('/register')
+        // res.send("You Have Logout Sucessfully !!")
+
+        
+    } catch (error) {
+        console.log("Something Went Wrong")
+        res.send(error)
+        
+    }
+
+}
+
+
+
+
+
+
+
 
 
  //Send Mail :-  (NodeMailer , ethereal)
@@ -354,6 +407,7 @@ exports.deletUser = async(req , res)=>{
         host: 'smtp.ethereal.email',
         port: 587,
         auth: {
+
             user: 'marge.runte13@ethereal.email',
             pass: 'GuHNbAbse16PwMphf8'
         }
@@ -379,30 +433,6 @@ exports.deletUser = async(req , res)=>{
  );
 
 }
-
-
-exports.logout= async(req , res)=>{
-    try {
-        res.clearCookie("jwtToken")
-        console.log("Logout Sucess!! ")
-        res.send("You Have Logout Sucessfully !!")
-
-        
-    } catch (error) {
-        console.log("Something Went Wrong")
-        res.send(error)
-        
-    }
-
-}
-
-
-
-
-
-
-
-
 
 
 

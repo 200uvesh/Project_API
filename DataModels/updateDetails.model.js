@@ -3,6 +3,10 @@ const updateDetails = mongoose.Schema({
     _id:{
         type:String
     } , 
+    firstName:{
+        type:String
+
+    } , 
     username:{
         type : String
 

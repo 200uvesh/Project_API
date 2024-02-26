@@ -1,5 +1,5 @@
 //------------------------------------Imports-------------------------------------- 
-const {register , login ,  addPersonalDetail ,getDetails ,  updateUsername , updateEmail , updatePassword, deletUser , sendMail , logout} = require("../../controllers/api/controllers.js")
+const {register , login ,  addPersonalDetail ,getUserDetails ,  updateUsername , updateEmail , updatePassword, deletUser , sendMail , logout} = require("../../controllers/api/controllers.js")
 const express = require("express")
 const checkAuth = require("../../middlewares/auth.js")
 const router = express.Router()
@@ -11,18 +11,19 @@ router.get('/' , (req , res)=>{
  
 
 //ROUTES
-//OK
 router.post('/register'   ,   register )
-// router.post("/login/:id" ,login )
-router.post("/login/" ,login )
-router.post("/addPersonalDetails/:id" , checkAuth ,  addPersonalDetail)
-router.get("/getDetails/"  ,checkAuth , getDetails )  
-router.put("/updateUsername/:id" , checkAuth , updateUsername)
-router.put("/updateEmail/:id" , checkAuth , updateEmail)
-router.put("/updatePassword/:id" , checkAuth , updatePassword)
-router.delete("/deleteUser/:id" , checkAuth , deletUser)
-router.get("/sendMail" ,checkAuth ,  sendMail)
-router.get("/logout" , checkAuth , logout)
+router.post('/login' , login )
+router.post('/addPersonalDetails' , checkAuth ,  addPersonalDetail)
+router.get('/getUserDetails'  ,checkAuth , getUserDetails )  
+router.put('/updateUsername' , checkAuth , updateUsername)
+router.put('/updateEmail' , checkAuth , updateEmail)
+router.put('/updatePassword' , checkAuth , updatePassword)
+router.delete('/deleteUser' , checkAuth , deletUser)
+router.get('/sendMail'  , checkAuth ,  sendMail)
+router.post('/logout' , checkAuth , logout)
+
+
+
 // router.get("/forget-password" , forgetPassword)
 // router.put("/reset-password" , resetPassword)
 
@@ -42,24 +43,4 @@ module.exports = router
 
 
 
-//PATH , STATIC , URLENCODER , 
-
-//app.use('/static', express.static(path.join(__dirname, 'Static Files'));
-
-//app.get('/file', (req, res)=>{ 
-//     res.sendFile(path.join(__dirname,'image.jpg')); 
-// }); 
-
-
-
-// const express = require('express');
-// const app = express();
-// const path = require('path');
  
-// // Static Middleware
-// console.log(app.use(express.static(
-//     path.join(__dirname, 'public'))))
-
-
-
-//app.use(express.urlencoded({ extended: false }));
