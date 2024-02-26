@@ -126,26 +126,27 @@ exports.login= async (req , res)=>{
              
             // console.log("Login Sucess")
              await data.save()
-             console.log("Login Detail Save Sucess")
+            //  console.log("Login Detail Save Sucess")
           
              //  res.status(200).send("Login Sucess !!")
             res.redirect("/userPage") 
         }
         else{
             res.status(200).send("Email or Password is Incorrect")
-            console.log("Email or Password is Incorrect")    
+            // console.log("Email or Password is Incorrect")    
         }
     }
     else{
         res.status(500).send("Email or Password is Incorresct")
-        console.log("Email or Password is Incorresct")
+        // console.log("Email or Password is Incorresct")
     }    
 }
 catch(error){
-    console.log("Something went wrong" + error)
+    // console.log("Something went wrong" + error)
     res.status(400).send("Something Went Wrong")
 }
 }
+
 
 
 
@@ -166,14 +167,14 @@ exports.addPersonalDetail=async(req , res)=>{
         )
 
        await data.save()
-       console.log("Personal Details saved sucessfull !!")
+    //    console.log("Personal Details saved sucessfull !!")
        res.redirect("/userPage")
         // res.status(200).send("Personal Details saved sucessfull !!")
          
 
     }
     catch(error){
-        console.log("Error is Occured : " +error )
+        // console.log("Error is Occured : " +error )
         res.status(500).send(error)
 
     } 
@@ -211,7 +212,7 @@ exports.getUserDetails = async(req , res)=>{
 
     }
     catch(error){
-        console.log("Error " + error)
+        // console.log("Error " + error)
         res.status(504).send(error)
 
     }
@@ -236,20 +237,20 @@ exports.updateUsername= async(req , res)=>{
 
        const isCheck = await RegisterUser.findOne({username:data.oldUsername})
        if(!isCheck){
-          console.log("Old Username is not correct ! ! ")
+        //   console.log("Old Username is not correct ! ! ")
           res.status(200).send("Old Username is not correct ! ! ")
        }
        else{
         await RegisterUser.updateOne({username:data.oldUsername} , {$set:{username:data.newUsername}})
         // await data.save()
-        console.log("Username  Updated sucessfully !!!")
+        // console.log("Username  Updated sucessfully !!!")
         res.status(201).send("Username  Updated sucessfully !!!")
 
        }
          
     }
     catch(error){
-        console.log("Something Went Wrong Error is :  " + error)
+        // console.log("Something Went Wrong Error is :  " + error)
          res.status(500).send("Something Went Wrong")
 
     }
@@ -273,16 +274,16 @@ exports.updateEmail=async(req , res)=>{
 
        const isCheck = await RegisterUser.findOne({email:data.oldEmail})
        if(!isCheck){
-          console.log("Email is not correct ! ! ")
+        //   console.log("Email is not correct ! ! ")
           res.status(200).send("Email is not correct ! ! ")
        }
          await RegisterUser.updateOne({email:data.oldEmail} , {$set:{email:data.newEmail}})
         //  await data.save()
-         console.log("Email   Updated sucessfully !!!")
+        //  console.log("Email   Updated sucessfully !!!")
          res.status(201).send("Email   Updated sucessfully !!!")
     }
     catch(error){
-        console.log("Something Went Wrong Error is :  " + error)
+        // console.log("Something Went Wrong Error is :  " + error)
         res.status(500).send("Something Went Wrong ")
 
     }
@@ -315,19 +316,19 @@ exports.updatePassword=async(req , res)=>{
         console.log(isCheck)
 
        if(!isCheck){
-          console.log("Password is not correct ! ! ")
+        //   console.log("Password is not correct ! ! ")
           res.status(200).send("Password is notcorrect ! ! ")
        }
        else{
         await RegisterUser.updateOne({_id:data._id} , {$set:{password: bcrypt.hashSync(data.newPassword)}})
-         console.log("Password  Updated sucessfully !!!")
+        //  console.log("Password  Updated sucessfully !!!")
          res.status(201).send("Password  Updated sucessfully !!!")
 
        }
           
     }
     catch(error){
-        console.log("Something Went Wrong Error is :  " + error)
+        // console.log("Something Went Wrong Error is :  " + error)
         res.status(500).send(error)
 
     }
@@ -353,23 +354,23 @@ exports.deletUser = async(req , res)=>{
 
        const isCheck = await RegisterUser.findOne({email:data.email})
        if(!isCheck){
-          console.log(" Username or password is not correct ! ! ")
+        //   console.log(" Username or password is not correct ! ! ")
           res.status(200).send(" Username or password is not correct ! ! ")
        }
        else{
         await RegisterUser.deleteOne({email:data.email} )
         await addPersonalDetails.deleteOne({firstName:data.firstName})
         res.clearCookie("jwtToken")
-        console.log("  Account delete Sucessfully ")
+        // console.log("  Account delete Sucessfully ")
         res.redirect('/register')
         // res.status(201).send("Account delete Sucesfully")
-        console.log("I am present after respond the data")
+        // console.log("I am present after respond the data")
 
        }
          
     }
     catch(error){
-        console.log("Something Went Wrong Error is :  " + error)
+        // console.log("Something Went Wrong Error is :  " + error)
         res.status(500).send("Something Went Wrong !! ")
 
     }
@@ -383,13 +384,13 @@ exports.deletUser = async(req , res)=>{
 exports.logout= async(req , res)=>{
     try {
         res.clearCookie("jwtToken")
-        console.log("Logout Sucess!! ")
+        // console.log("Logout Sucess!! ")
         res.redirect('/login')
         // res.send("You Have Logout Sucessfully !!")
 
         
     } catch (error) {
-        console.log("Something Went Wrong")
+        // console.log("Something Went Wrong")
         res.send(error)
         
     }
@@ -427,7 +428,7 @@ exports.logout= async(req , res)=>{
           html: "<b>Hello Uvesh Bhai</b>",  
         });
       
-        console.log("Message sent: %s", info.messageId);
+        // console.log("Message sent: %s", info.messageId);
         res.status(201).send(info.messageId)
  }
  main().catch( 

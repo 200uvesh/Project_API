@@ -23,7 +23,7 @@ const verifyToken=async function(req , res , next){
        }
        else{
            
-           console.log("You Have sucessfully verified and Get Details !! :--> ")
+        //    console.log("You Have sucessfully verified and Get Details !! :--> ")
           
             req.values=payload
            next()

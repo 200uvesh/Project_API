@@ -8,6 +8,8 @@ const app = express()
 const cors = require("cors")
 const cookieParser = require("cookie-parser");
 const methodOverride = require("method-override")
+const status = require("express-status-monitor")
+
 
  
  
@@ -16,6 +18,7 @@ const methodOverride = require("method-override")
 
 
 //----------------------------Middlewares------------------------------------------------
+app.use(status())  // for montoring Streams
 app.use(methodOverride('_method'))
 app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(cookieParser("secret"));
@@ -23,6 +26,7 @@ app.use(cors())
 app.use(express.json()) 
 app.use(express.urlencoded({extended:true}))
 app.set("view engine" , "ejs")
+
  
  
  
