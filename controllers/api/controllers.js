@@ -87,19 +87,21 @@ exports.login= async (req , res)=>{
      )
      try{
     
-    const values = await RegisterUser.findOne({email:data.email})
+     const values = await RegisterUser.findOne({email:data.email})
    
-    if(values){
+       if(values){
+        console.log(values)
          
-       const hashPassword =  values.password
-       console.log(hashPassword)
+    //    const hashPassword =  values.password
+       console.log(values.password)
        console.log(data.password)
-       const isMatch = await bcrypt.compare( hashPassword ,data.password)
+       const isMatch =  await  bcrypt.compare (data.password , values.password  )
        console.log(isMatch)
+
      
        //bcrypt.compare(req.body.password,RegisterUser.password)
       
-        if(isMatch){
+          if(isMatch){
             const payload = {
                 username : data.username  , 
                 email: data.email, 
@@ -111,7 +113,7 @@ exports.login= async (req , res)=>{
                      
                       throw error
                   }
-                   
+                  else{
                     res.cookie( "jwtToken" , token ,
                     { httpOnly: true, 
                         secure: false, 
@@ -119,19 +121,16 @@ exports.login= async (req , res)=>{
                     })
                   console.log("Cookies Set Sucessfully")
 
-
-            
-            
+                  }
+            })
              
             console.log("Login Sucess")
           
-            //  res.status(200).send("Login Sucess !!")
-            res.redirect("/userPage")
-            
-        })
-    }
+             //  res.status(200).send("Login Sucess !!")
+            res.redirect("/userPage") 
+        }
         else{
-            res.status(200).send("Email or Password is Incorresct")
+            res.status(200).send("Email or Password is Incorrect")
             console.log("Email or Password is Incorrect")    
         }
     }
@@ -308,8 +307,9 @@ exports.updatePassword=async(req , res)=>{
        const prevData = await RegisterUser.findOne({_id:data._id})
         
        
-       const isCheck = await bcrypt.compare(data.oldPassword,prevData.password )  
-       
+       const isCheck = await bcrypt.compare(data.oldPassword,prevData.password ) 
+        console.log(isCheck)
+
        if(!isCheck){
           console.log("Password is not correct ! ! ")
           res.status(200).send("Password is notcorrect ! ! ")
