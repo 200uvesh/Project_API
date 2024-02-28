@@ -7,7 +7,7 @@ const LoginUser = require("../../DataModels/login.model.js")
 const updateDetails = require("../../DataModels/updateDetails.model.js")
 const addPersonalDetails = require("../../DataModels/personalDetail.model.js")
 const nodemailer = require("nodemailer")
-
+// Checking for commit
 
 
  
@@ -22,6 +22,7 @@ exports.register=  async(req , res)=>{
       username:req.body.username,
       email:req.body.email,
       password: bcrypt.hashSync(req.body.password)
+      
     })
          try{
             const already_exist=  await RegisterUser.findOne({email:data.email}) || await RegisterUser.findOne({username:data.username})
@@ -167,7 +168,7 @@ exports.addPersonalDetail=async(req , res)=>{
         )
 
        await data.save()
-    //    console.log("Personal Details saved sucessfull !!")
+     //    console.log("Personal Details saved sucessfull !!")
        res.redirect("/userPage")
         // res.status(200).send("Personal Details saved sucessfull !!")
          
@@ -354,8 +355,11 @@ exports.deletUser = async(req , res)=>{
 
        const isCheck = await RegisterUser.findOne({email:data.email})
        if(!isCheck){
-        //   console.log(" Username or password is not correct ! ! ")
+          //   console.log(" Username or password is not correct ! ! ")
           res.status(200).send(" Username or password is not correct ! ! ")
+         // 
+
+
        }
        else{
         await RegisterUser.deleteOne({email:data.email} )
