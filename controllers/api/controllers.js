@@ -419,7 +419,7 @@ exports.forgotPassword = async(req , res)=>{
         //    sendResetPasswordMail(name , data.email , randomstring )
         //    sendResetPasswordMail( data.email , randomstring )
 
-           res.send(`<p> Hii   , Please copy the link and <a href="http://localhost:6030/api/reset-password?token=${token}">  reset your password </a>`)
+           res.send(`<p> Hii   , Please copy the link and <a href="https://project-api-0qm7.onrender.com/api/reset-password?token=${token}">  reset your password </a>`)
 
 
         }
@@ -482,7 +482,7 @@ exports.resetPasswordNext =  async (req , res)=>{
         await RegisterUser.findByIdAndUpdate({_id: data._id} , {$set:{password:newPassword }} , { new:true})
         console.log("Password has been set sucessfully  : ")
         
-        res.send(`Password has been set sucessfully <a href="http://localhost:6030/login">  Click here to login  </a>`)
+        res.send(`Password has been set sucessfully : Click here to <a href="https://project-api-0qm7.onrender.com/login"> Login </a>`)
         
 
         
