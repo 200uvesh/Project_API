@@ -412,7 +412,7 @@ exports.forgotPassword = async(req , res)=>{
         const userData = await RegisterUser.findOne({email:data.email})
         if(userData){
             const token = randomString.generate()
-            console.log(token)
+            // console.log(token)
            await RegisterUser.updateOne({email:data.email} ,{$set:{token:token}})
         //    const UserPersonalData = await addPersonalDetails.findOne({email:data.email})
         //    const name =`${UserPersonalData.firstName} ${UserPersonalData.lastName}`
@@ -431,7 +431,7 @@ exports.forgotPassword = async(req , res)=>{
 
     }
     catch(error){
-        console.log("Something Went Wrong : "+ error)
+        // console.log("Something Went Wrong : "+ error)
         res.send(error)
 
     }
@@ -444,22 +444,22 @@ exports.forgotPassword = async(req , res)=>{
 exports.resetPassword = async (req , res)=>{
     try {
         const token = req.query.token
-        console.log(token)
+        // console.log(token)
         const tokenData = await RegisterUser.findOne({token:token})
-        console.log("token sahi match hua hai")
+        // console.log("token sahi match hua hai")
         if(tokenData){
             res.redirect('/reset-password')
         }
 
         else{
-            console.log("Link has been Expired")
+            // console.log("Link has been Expired")
             res.send("Link Has been Expired")
         }
 
 
         
     } catch (error) {
-        console.log("Something went Wrong : " + error)
+        // console.log("Something went Wrong : " + error)
         res.send("Something Went Wrong")
         
     }
@@ -467,34 +467,33 @@ exports.resetPassword = async (req , res)=>{
 }
 
 
+// Reset Password API next 
+
 exports.resetPasswordNext =  async (req , res)=>{
     try {
-        console.log("Me yha hu reset password ke andar")
+        // console.log("Me yha hu reset password ke andar")
         const data = new UpdateDetails({
             _id : req.body._id , 
             password: req.body.password , 
         })
         const Password = data.password
-        console.log(Password)
+        // console.log(Password)
         const newPassword =   bcrypt.hashSync(Password)
-        console.log(newPassword)
+        // console.log(newPassword)
          
         await RegisterUser.findByIdAndUpdate({_id: data._id} , {$set:{password:newPassword }} , { new:true})
-        console.log("Password has been set sucessfully  : ")
+        // console.log("Password has been set sucessfully  : ")
         
         res.send(`Password has been set sucessfully : Click here to <a href="https://project-api-0qm7.onrender.com/login"> Login </a>`)
         
 
         
     } catch (error) {
-        console.log("Something went wrong ")
+        // console.log("Something went wrong ")
         
     }
 
-     
-
-
-
+    
 
 }
 
