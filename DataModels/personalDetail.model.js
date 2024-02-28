@@ -10,6 +10,11 @@
         required:true
 
     } , 
+    email:{
+        type: mongoose.Schema.Types.ObjectId  ,
+        ref:"register" 
+
+    } , 
     dateOfBirth:{
         type:String, 
         required:true

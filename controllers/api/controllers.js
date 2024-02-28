@@ -6,15 +6,12 @@ const RegisterUser = require("../../DataModels/registration.model.js")
 const LoginUser = require("../../DataModels/login.model.js")
 const updateDetails = require("../../DataModels/updateDetails.model.js")
 const addPersonalDetails = require("../../DataModels/personalDetail.model.js")
-const nodemailer = require("nodemailer")
-// Checking for commit
-
+ 
+const randomString = require("randomstring")
+const UpdateDetails = require("../../DataModels/updateDetails.model.js")
+const {sendResetPasswordMail}= require("../../utils/sendMail.js")
 
  
-  
-
-
-
 
 //REGISTER API
 exports.register=  async(req , res)=>{
@@ -402,65 +399,129 @@ exports.logout= async(req , res)=>{
 }
 
 
+ 
+// Forgot Password API
+exports.forgotPassword = async(req , res)=>{
+    try{
+        const data = new updateDetails(
+            {
+                email : req.body.email,
+
+            }
+        )
+        const userData = await RegisterUser.findOne({email:data.email})
+        if(userData){
+            const token = randomString.generate()
+            console.log(token)
+           await RegisterUser.updateOne({email:data.email} ,{$set:{token:token}})
+        //    const UserPersonalData = await addPersonalDetails.findOne({email:data.email})
+        //    const name =`${UserPersonalData.firstName} ${UserPersonalData.lastName}`
+        //    sendResetPasswordMail(name , data.email , randomstring )
+        //    sendResetPasswordMail( data.email , randomstring )
+
+           res.send(`<p> Hii   , Please copy the link and <a href="http://localhost:6030/api/reset-password?token=${token}">  reset your password </a>`)
 
 
-
-
-
-
-
- //Send Mail :-  (NodeMailer , ethereal)
-
- exports.sendMail = async (req , res)=>{
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        auth: {
-
-            user: 'marge.runte13@ethereal.email',
-            pass: 'GuHNbAbse16PwMphf8'
         }
-    });
+        else{
+            console.log("Email is not Defined")
+            res.send(" Email is not found !! ")
+        }
+        
 
-    async function main() {
-        // send mail with defined transport object
-        const info = await transporter.sendMail({
-          from: '"Uvesh ahmed 👻" <foo@example.com>',  
-          to: "uveshahmad30@gmail.com, uveshahmadk@gmail.com",  
-          subject: "Hello Uvesh Bhai✔", 
-          text: "Hello Welcome to the  world of Uvesh Ahmad?",  
-          html: "<b>Hello Uvesh Bhai</b>",  
-        });
-      
-        // console.log("Message sent: %s", info.messageId);
-        res.status(201).send(info.messageId)
- }
- main().catch( 
-   
-    res.status(500).send("Something went Wrong")
+    }
+    catch(error){
+        console.log("Something Went Wrong : "+ error)
+        res.send(error)
 
- );
+    }
+
+}
+
+// Reset Password-API
+
+
+exports.resetPassword = async (req , res)=>{
+    try {
+        const token = req.query.token
+        console.log(token)
+        const tokenData = await RegisterUser.findOne({token:token})
+        console.log("token sahi match hua hai")
+        if(tokenData){
+            res.redirect('/reset-password')
+        }
+
+        else{
+            console.log("Link has been Expired")
+            res.send("Link Has been Expired")
+        }
+
+
+        
+    } catch (error) {
+        console.log("Something went Wrong : " + error)
+        res.send("Something Went Wrong")
+        
+    }
 
 }
 
 
+exports.resetPasswordNext =  async (req , res)=>{
+    try {
+        console.log("Me yha hu reset password ke andar")
+        const data = new UpdateDetails({
+            _id : req.body._id , 
+            password: req.body.password , 
+        })
+        const Password = data.password
+        console.log(Password)
+        const newPassword =   bcrypt.hashSync(Password)
+        console.log(newPassword)
+         
+        await RegisterUser.findByIdAndUpdate({_id: data._id} , {$set:{password:newPassword }} , { new:true})
+        console.log("Password has been set sucessfully  : ")
+        
+        res.send(`Password has been set sucessfully <a href="http://localhost:6030/login">  Click here to login  </a>`)
+        
+
+        
+    } catch (error) {
+        console.log("Something went wrong ")
+        
+    }
+
+     
 
 
 
-// Forget Password API
 
-// exports.forgetPassword= async(req , res)={
+}
+
+// etherial Mail
+
+//     async function main() {
+//         // send mail with defined transport object
+//         const info = await transporter.sendMail({
+//           from: '"Uvesh ahmed 👻" <foo@example.com>',  
+//           to: "uveshahmad30@gmail.com, uveshahmadk@gmail.com",  
+//           subject: "Hello Uvesh Bhai✔", 
+//           text: "Hello Welcome to the  world of Uvesh Ahmad?",  
+//           html: "<b>Hello Uvesh Bhai</b>",  
+//         });
+      
+//         // console.log("Message sent: %s", info.messageId);
+//         res.status(201).send(info.messageId)
+//  }
+//  main().catch( 
+   
+//     res.status(500).send("Something went Wrong")
 
 
-// }
+//  );
 
 
 
 
 
-// Reset Password API (through mail link)
-
-// exports.resetPassword= async(req , res)={
-    
-
-// }
+ 

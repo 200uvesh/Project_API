@@ -1,5 +1,5 @@
 //------------------------------------Imports-------------------------------------- 
-const {register , login ,  addPersonalDetail ,getUserDetails ,  updateUsername , updateEmail , updatePassword, deletUser , sendMail , logout} = require("../../controllers/api/controllers.js")
+const {register , login ,  addPersonalDetail ,getUserDetails ,  updateUsername , updateEmail , updatePassword, deletUser ,   logout , forgotPassword , resetPassword , resetPasswordNext} = require("../../controllers/api/controllers.js")
 const express = require("express")
 const checkAuth = require("../../middlewares/auth.js")
 const router = express.Router()
@@ -19,13 +19,11 @@ router.put('/updateUsername' , checkAuth , updateUsername)
 router.put('/updateEmail' , checkAuth , updateEmail)
 router.put('/updatePassword' , checkAuth , updatePassword)
 router.delete('/deleteUser' , checkAuth , deletUser)
-router.get('/sendMail'  , checkAuth ,  sendMail)
 router.post('/logout' , checkAuth , logout)
+router.post('/forgot-password' , forgotPassword)
+router.get('/reset-password' , resetPassword)
+router.post('/reset-password-next' , resetPasswordNext )
 
-
-
-// router.get("/forget-password" , forgetPassword)
-// router.put("/reset-password" , resetPassword)
 
 
 

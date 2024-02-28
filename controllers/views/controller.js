@@ -37,7 +37,7 @@ exports.getDetails = async(req , res)=>{
 
     }
     else{
-        res.redirect("/register")
+        res.redirect("/login")
     }
     
 }
@@ -59,4 +59,14 @@ exports.updatePassword = async(req , res)=>{
 
 exports.deleteUser= async(req , res)=>{
     res.render('deleteUser')
+}
+
+
+exports.forgotPassword = async(req , res)=>{
+    res.render('forgot-password')
+}
+
+
+exports.resetPassword = async(req , res)=>{
+    res.render('reset-password')
 }

@@ -40,6 +40,15 @@ const updateDetails = mongoose.Schema({
         type : String
 
     } , 
+    password:{
+        type:String
+
+    },
+    
+    // token:{
+    //     type: String , 
+    //     default: ""
+    // }
 
 
 
